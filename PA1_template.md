@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
@@ -15,21 +10,21 @@ We will start by loading the data into a data frame named *data*
 ```
 
 ## What is mean total number of steps taken per day?
-To obtain the sum of steps by day we will use the [aggregate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/aggregate.html) function 
+To obtain the sum of steps by day we will use the [aggregate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/aggregate.html) function.
 
 ```r
   library(stats)
   data_by_day <-aggregate(steps ~ date, data, sum)
 ```
 
-Now we'll show a histogram of the total daily steps using the ggplot2 library.  I was getting warnings about binwidth so I am using the advice of [this](http://stackoverflow.com/questions/7458796/how-to-suppress-qplots-binwidth-warning-inside-a-function) answer to go around them.
+Now we'll show a histogram of the total daily steps using the ggplot2 library.
 
 ```r
   library(ggplot2)
-  ggplot(data = data_by_day, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day$steps))/100)
+  ggplot(data = data_by_day, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day$steps))/20, colour="black", fill="white")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 We will now calculate the mean and median of the steps/day:
 
@@ -81,7 +76,7 @@ Create the dataframe corresponding to average steps by interval and create the p
   ggplot(data=data_by_interval, aes(x=interval, y=steps)) + geom_line()
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 Print the interval where the maximum average number of steps occurs in a day:
 
 ```r
@@ -113,10 +108,10 @@ We will create a new dataset where the NA values are replaced with the average o
   data2$steps[data2nas]<-data_by_interval$steps[match(data2$interval[data2nas], data_by_interval$interval)]
   data_by_day2 <-aggregate(steps ~ date, data2, sum)
   library(ggplot2)
-  ggplot(data = data_by_day2, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day2$steps))/100)
+  ggplot(data = data_by_day2, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day2$steps))/20,colour="black", fill="white")
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
 
 We will now calculate the mean and median of the adjusted steps/day:
 
@@ -153,4 +148,4 @@ add the dayType factor to data2, create the new data by interval frame that cont
  ggplot(data=data_by_interval2,aes(x = interval, y=steps)) + geom_line() + facet_grid(dayType ~ .)
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 

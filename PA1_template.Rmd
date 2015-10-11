@@ -14,16 +14,16 @@ We will start by loading the data into a data frame named *data*
 ```
 
 ## What is mean total number of steps taken per day?
-To obtain the sum of steps by day we will use the [aggregate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/aggregate.html) function 
+To obtain the sum of steps by day we will use the [aggregate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/aggregate.html) function.
 ```{r echo=TRUE}
   library(stats)
   data_by_day <-aggregate(steps ~ date, data, sum)
 ```
 
-Now we'll show a histogram of the total daily steps using the ggplot2 library.  I was getting warnings about binwidth so I am using the advice of [this](http://stackoverflow.com/questions/7458796/how-to-suppress-qplots-binwidth-warning-inside-a-function) answer to go around them.
+Now we'll show a histogram of the total daily steps using the ggplot2 library.
 ```{r echo=TRUE}
   library(ggplot2)
-  ggplot(data = data_by_day, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day$steps))/100)
+  ggplot(data = data_by_day, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day$steps))/20, colour="black", fill="white")
 ```
 
 We will now calculate the mean and median of the steps/day:
@@ -64,7 +64,7 @@ We will create a new dataset where the NA values are replaced with the average o
   data2$steps[data2nas]<-data_by_interval$steps[match(data2$interval[data2nas], data_by_interval$interval)]
   data_by_day2 <-aggregate(steps ~ date, data2, sum)
   library(ggplot2)
-  ggplot(data = data_by_day2, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day2$steps))/100)
+  ggplot(data = data_by_day2, aes(x = steps)) + geom_histogram(binwidth = diff(range(data_by_day2$steps))/20,colour="black", fill="white")
 ```
 
 We will now calculate the mean and median of the adjusted steps/day:
